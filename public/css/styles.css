@@ -71,3 +71,9 @@
 body{
     background-color: rgb(255, 251, 244);
 }
+
+.icon
+{
+ 
+    inline-size:70px;
+}
