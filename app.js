@@ -11,6 +11,8 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 const app = express();
 
+let user_login  = 0 ; 
+
 let posts = [];
 
 const content = fs.readFileSync("data.json").toString()
@@ -33,11 +35,19 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 app.get("/",function(req,res)
 {
-   
- res.render('home', {
-   startingContent:homeStartingContent,
-   posts:posts
-  })
+  if(user_login ==0)
+  {res.render('login')
+
+
+}
+  
+  else {
+      user_login =0;
+      res.render('home', {
+      startingContent:homeStartingContent,
+      posts:posts
+     })
+  }
 
    
 });
@@ -52,6 +62,39 @@ app.get("/contact",function(req,res){
   res.render("contact",{contactContent})
   
 });
+
+//Going to login page
+app.get("/login",function(req,res){
+  res.render("login")
+});
+
+//login request 
+  app.post("/login",function(req,res){
+    // const loginForm = document.getElementById("login-form");
+    // const loginButton = document.getElementById("login-form-submit");
+    // const loginErrorMsg = document.getElementById("login-error-msg");
+  
+  // loginButton.addEventListener("click", (e) => {
+  //     e.preventDefault();
+      const username = req.body.username;
+      const password = req.body.password;
+  
+      if (username === "user" && password === "user") {
+          console.log("succesfully loged in ")
+          user_login = 1;
+          res.redirect("/");
+         
+      } 
+      else{
+        user_login = 0 ;
+        console.log("Not succesfully loged in ")
+      }
+  
+  
+  });
+
+
+
 
 //Compose page
 app.get("/compose",function(req,res){
